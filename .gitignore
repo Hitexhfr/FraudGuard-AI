@@ -1,0 +1,12 @@
+# Virtual Environment
+venv/
+__pycache__/
+*.pyc
+
+# Data & Notebooks (keep dataset local to avoid repo size limits)
+data/raw/*.csv
+.ipynb_checkpoints/
+
+# System files
+.DS_Store
+.env
