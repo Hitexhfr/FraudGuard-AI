@@ -21,7 +21,7 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
-API_BASE = "https://fraudguard-ai.onrender.com"
+API_BASE = "https://fraudguard-ai-tzcl.onrender.com"
 
 # Comprehensive UI Overhaul: Sidebar, Tabs, Inputs, and High-Contrast Theme
 st.markdown(
@@ -188,7 +188,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-API_BASE = "https://fraudguard-ai.onrender.com"
+API_BASE = "https://fraudguard-ai-tzcl.onrender.com"
 
 # Header
 st.markdown(
