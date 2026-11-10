@@ -188,7 +188,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-API_BASE = "http://127.0.0.1:8000"
+API_BASE = "https://fraudguard-ai.onrender.com"
 
 # Header
 st.markdown(
@@ -372,8 +372,7 @@ with tab1:
             )
 
     except Exception:
-        st.warning("API service unavailable on port 8000.")
-
+        st.warning("API service unavailable.")
 # TAB 2: LIVE STREAM MONITOR
 with tab2:
     st.markdown("<br><div class='card-title'>Real-Time Transaction Stream & Performance Metrics</div>", unsafe_allow_html=True)
@@ -545,4 +544,4 @@ with tab4:
         else:
             st.info("No transaction audit records logged yet.")
     except Exception:
-        st.warning("API service unavailable on port 8000.")
+        st.warning("API service unavailable.")
