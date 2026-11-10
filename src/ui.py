@@ -21,6 +21,7 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
+API_BASE = "https://fraudguard-ai.onrender.com"
 
 # Comprehensive UI Overhaul: Sidebar, Tabs, Inputs, and High-Contrast Theme
 st.markdown(
