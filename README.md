@@ -1,147 +1,177 @@
-# ⚡ FraudGuard OPS — Enterprise AI Risk & Compliance Platform
+# FraudGuard-AI 🛡️
 
-[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.100%2B-005571?logo=fastapi)](https://fastapi.tiangolo.com/)
-[![Streamlit](https://img.shields.io/badge/Streamlit-1.28%2B-FF4B4B?logo=streamlit)](https://streamlit.io/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/mit)
+**FraudGuard-AI** is an end-to-end, real-time transaction risk scoring and anomaly detection platform built to catch financial fraud before it happens. Powered by machine learning (XGBoost & Isolation Forest) with explainable AI (SHAP), the system processes high-risk transaction signals and delivers instant risk scores, feature impact attributions, and human-in-the-loop audit logging through a modern console.
 
-**FraudGuard OPS** is a production-grade, full-stack financial fraud detection and regulatory compliance platform. Designed for enterprise risk operations centers, the platform combines supervised risk scoring, unsupervised anomaly detection, explainable AI (XAI), human-in-the-loop audit workflows, and automated compliance reporting.
+---
+
+## 🌟 Key Features
+
+- **Real-Time Risk Scoring**: Sub-second risk evaluation combining supervised model prediction with unsupervised anomaly detection.
+- **Explainable AI (XAI)**: SHAP (SHapley Additive exPlanations) visual attribution to break down exactly which features contributed to a transaction's risk score.
+- **Automated Fallback Engine**: Built-in data ingestion pipelines capable of handling missing remote datasets gracefully via synthetic distribution fallback.
+- **Human-in-the-Loop Workbench**: Integrated audit log system tracking transaction hash records for analyst review.
+- **Decoupled Architecture**: Fast, lightweight Streamlit frontend communicating seamlessly with a containerized FastAPI REST backend over HTTPS.
 
 ---
 
 ## 🏗️ System Architecture
 
 ```text
-┌──────────────────────────────┐       REST API JSON       ┌──────────────────────────────┐
-│                              │  (POST /v1/assess-fraud)  │                              │
-│   Streamlit Frontend Console │ ─────────────────────────>│     FastAPI Core Engine      │
-│   • ChaiCode Dark Theme      │                           │   • Multi-Model Scoring      │
-│   • Live TPS / Latency HUD   │<───────────────────────── │   • SHAP Explainability      │
-│   • PyVis Topology Graph     │     Audit Persistence     │   • SQLite Audit Workbench   │
-└──────────────────────────────┘       & PDF Reports       └──────────────────────────────┘
+┌─────────────────────────┐         HTTP/REST         ┌────────────────────────┐
+│  Streamlit Console UI   │  ──────────────────────>  │   FastAPI Backend API  │
+│  (Hosted on Streamlit)  │  <──────────────────────  │   (Hosted on Render)   │
+└─────────────────────────┘      JSON Payload         └───────────┬────────────┘
+                                                                  │
+                                                        ┌─────────┴─────────┐
+                                                        │  Inference Engine │
+                                                        │  - XGBoost        │
+                                                        │  - IsolationForest│
+                                                        │  - SHAP Explainer │
+                                                        └───────────────────┘
 
 ```
 
 ---
 
-## 🚀 Key Modules & Capabilities
+## 🚀 Live Demos
 
-### 1. Hybrid Machine Learning Scoring Engine
-
-* **Supervised Learning (Random Forest):** Trained on financial transaction datasets to predict transaction risk probabilities.
-* **Unsupervised Learning (Isolation Forest):** Identifies behavioral anomalies, structural outliers, and coordinated financial drain attempts.
-* **Composite Risk Index:** Outputs a normalized score (0–100) mapped to clear operational risk bands (`LOW`, `MEDIUM`, `HIGH`, `CRITICAL`).
-
-### 2. Explainable AI (XAI) via SHAP
-
-* Every transaction evaluation includes real-time SHAP feature attributions.
-* Visualizes top risk drivers (e.g., balance deviations, transaction amounts, velocity spikes) directly in the dashboard UI.
-
-### 3. Automated AI Case Investigator Agent
-
-* Generates contextual investigation summaries for flagged transactions.
-* Recommends immediate system actions (`AUTO_APPROVE`, `FLAG_FOR_REVIEW`, `IMMEDIATE_BLOCK`) based on threat telemetry.
-
-### 4. Human-in-the-Loop Audit Workbench
-
-* Backed by a persistent **SQLite** database (`fraud_audit.db`).
-* Allows risk analysts to review historical audit logs, examine SHA-256 transaction hashes, and log manual override decisions (`CONFIRMED_FRAUD`, `FALSE_POSITIVE`, `FLAGGED_FOR_LEGAL`).
-
-### 5. Entity Network Topology Visualizer
-
-* Powered by **PyVis**, generating an interactive node-link graph.
-* Maps relationship flows between origin accounts, destination targets, and known suspicious mule hubs.
-
-### 6. Real-Time Transaction Streaming Simulator
-
-* Simulates high-throughput streaming events to test system performance under load.
-* Features a live **TPS (Transactions Per Second)** counter, sub-100ms **P99 API Latency** profile chart, and a dynamic threat alert ticker.
-
-### 7. Automated Compliance PDF Exporter
-
-* Built with **ReportLab**.
-* Compiles case metadata, SHA-256 verification hashes, SHAP score breakdowns, and investigator notes into an audit-ready PDF document with a single click.
+* **Frontend Console**: [fraudguard-ai-hitesh.streamlit.app](https://www.google.com/search?q=https://fraudguard-ai-hitesh.streamlit.app)
+* **REST API Endpoint**: `https://fraudguard-ai-tzcl.onrender.com`
 
 ---
 
-## 🛠️ Tech Stack
+## 📂 Project Structure
 
-* **Backend API:** FastAPI, Uvicorn, Pydantic, SQLite
-* **Frontend Console:** Streamlit, Plotly, PyVis (Network Graph)
-* **AI / ML Core:** Scikit-Learn, SHAP, Joblib, Pandas, NumPy
-* **Utilities:** Faker (Synthetic Streaming Data), ReportLab (PDF Case Reports)
+```text
+FraudGuard-AI/
+├── data/
+│   └── raw/                  # Transaction datasets (CSV)
+├── models/                   # Pre-trained ML artifacts & scalar pkls
+├── notebooks/                # Model exploration and prototyping
+├── src/
+│   ├── app.py                # FastAPI server entry point & model loading
+│   ├── ingestion.py          # Data ingestion engine with cloud fallbacks
+│   ├── risk_scoring.py       # ML risk scoring and SHAP explainability core
+│   └── ui.py                 # Streamlit dashboard interface
+├── requirements.txt          # Python dependency specifications
+└── README.md                 # Project documentation
+
+```
 
 ---
 
-## ⚙️ Local Installation & Setup
+## 🛠️ Local Setup & Installation
 
-1. **Clone the repository:**
+### Prerequisites
+
+* Python 3.10+
+* Git
+
+### 1. Clone the Repository
+
 ```bash
 git clone [https://github.com/Hitexhfr/FraudGuard-AI.git](https://github.com/Hitexhfr/FraudGuard-AI.git)
 cd FraudGuard-AI
 
 ```
 
+### 2. Set Up Virtual Environment
 
-2. **Create and activate a virtual environment:**
 ```bash
+# Windows
 python -m venv venv
-source venv/Scripts/activate  # On Windows PowerShell/CMD: venv\Scripts\activate
+venv\Scripts\activate
+
+# Linux/macOS
+python3 -m venv venv
+source venv/bin/activate
 
 ```
 
+### 3. Install Dependencies
 
-3. **Install dependencies:**
 ```bash
 pip install -r requirements.txt
 
 ```
 
+---
 
-4. **Start the FastAPI Backend:**
+## 🏃 Running the Application Locally
+
+### Step 1: Start the FastAPI Backend
+
 ```bash
-uvicorn src.app:app --reload --port 8000
+uvicorn src.app:app --host 127.0.0.1 --port 8000 --reload
 
 ```
 
+The API docs will be accessible at `http://127.0.0.1:8000/docs`.
 
-*(The backend API will be live at `http://127.0.0.1:8000`)*
-5. **Launch the Streamlit Operations Console:**
-Open a **second terminal tab**, activate your virtual environment, and run:
+### Step 2: Start the Streamlit Dashboard
+
+Open a new terminal window, activate your environment, and run:
+
 ```bash
 streamlit run src/ui.py
 
 ```
 
-
-*(The UI dashboard will open automatically at `http://localhost:8501`)*
+The console will launch in your default web browser at `http://localhost:8501`.
 
 ---
 
-## 📂 Project Directory Structure
+## 📡 API Reference
 
-```text
-FraudGuard-AI/
-├── models/                  # Serialized ML models (.pkl)
-├── notebooks/               # Exploratory data analysis Jupyter notebooks
-├── src/
-│   ├── app.py               # FastAPI backend & endpoints
-│   ├── ui.py                # Streamlit operations dashboard
-│   ├── pdf_generator.py     # ReportLab compliance PDF builder
-│   ├── risk_scoring.py      # Core classification logic
-│   ├── explainability.py    # SHAP calculation engine
-│   └── agent.py             # Automated case investigator agent
-├── fraud_audit.db           # SQLite human-in-the-loop audit log
-├── requirements.txt         # Project dependencies
-└── README.md                # Documentation
+### Health Check
+
+`GET /`
+
+```json
+{
+  "status": "HEALTHY",
+  "version": "2.0.0"
+}
+
+```
+
+### Predict Risk Signal
+
+`POST /predict`
+
+**Request Body:**
+
+```json
+{
+  "step": 1,
+  "type": "TRANSFER",
+  "amount": 500000.0,
+  "nameOrig": "C1305486145",
+  "oldbalanceOrg": 500000.0,
+  "newbalanceOrig": 0.0,
+  "nameDest": "C553264065",
+  "oldbalanceDest": 0.0,
+  "newbalanceDest": 0.0
+}
 
 ```
 
 ---
 
-## 📄 License
+## 🧰 Tech Stack
 
-Distributed under the **MIT License**. See `LICENSE` for more information.
+* **Machine Learning**: `scikit-learn`, `xgboost`, `shap`, `pandas`, `numpy`
+* **Backend API**: `FastAPI`, `uvicorn`, `pydantic`
+* **Frontend UI**: `Streamlit`, `plotly`
+* **Cloud Infrastructure**: Streamlit Cloud, Render
+
+---
+
+## 👤 Author
+
+**Hitesh Yadav**
+
+* GitHub: [@Hitexhfr](https://github.com/Hitexhfr)
 
 ```
 
